@@ -3,9 +3,22 @@
 import { useState } from "react";
 import FileUploadInput from "../FileUploadInput/FileUploadInput";
 import ImagePreview from "../ImagePreview/ImagePreview";
+import Button from "../Button/Button";
 
 const ImageUploadSection = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
+
+  const updateFile = (file: File | null) => {
+    if (!file) return;
+
+    setFile(file);
+    setIsButtonDisabled(false);
+  };
+
+  const onClick = () => {
+
+  }
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -17,8 +30,9 @@ const ImageUploadSection = () => {
           <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
             Transform images into meaningful information with AI.
           </p>
-          <FileUploadInput label="Upload your image here" onFileSelect={setFile} file={file}/>
-          <ImagePreview file={file} /> 
+          <FileUploadInput label="Upload your image here" onFileSelect={updateFile} file={file}/>
+          <ImagePreview file={file} />
+          <Button label={'Upload'} onClick={onClick} disabled={isButtonDisabled} variant={'primary'}/>
         </div>
       </main>
     </div>

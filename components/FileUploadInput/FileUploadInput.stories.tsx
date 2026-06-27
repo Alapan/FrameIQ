@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/nextjs-vite";
 import FileUploadInput from "./FileUploadInput";
-import { ComponentProps } from "react";
+import { useState } from "react";
 
 const meta = {
   title: 'Components/FileUploadInput',
@@ -17,10 +17,22 @@ const meta = {
 export default meta;
 
 export type Story = StoryObj<typeof meta>;
-export type Props = ComponentProps<typeof FileUploadInput>;
 
 export const Default: Story = {
   args: {
-    label: 'Upload image'
-  }
+    label: 'Upload image here',
+    file: null,
+    onFileSelect: () => {}
+  },
+  render: (args) => {
+    const [file, setFile] = useState<File | null>(null);
+
+    return (
+      <FileUploadInput
+        label={args.label}
+        file={file}
+        onFileSelect={setFile}
+      />
+    );
+  },
 };

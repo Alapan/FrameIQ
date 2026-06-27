@@ -1,15 +1,16 @@
 'use client';
 
-import { useState } from "react";
-
 interface FileUploadInputProps {
   label: string;
+  file: File | null
+  onFileSelect: (file: File | null) => void;
 };
 
 const FileUploadInput = ({
-	label
+  label,
+  file,
+  onFileSelect,
 }: FileUploadInputProps) => {
-	const [file, setFile] = useState<File | null>(null);
   return (
 		<>
       <label
@@ -18,15 +19,15 @@ const FileUploadInput = ({
       >
         {label}
       </label>
-			<input
-				className="hidden"
+      <input
+        className="hidden"
         id="file"
-				type="file"
-				onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-			/>
+        type="file"
+        onChange={(e) => onFileSelect(e.target.files?.[0] ?? null)}
+      />
       {file && <span className="ml-3">{file.name}</span>}
-		</>
-	);
+    </>
+  );
 };
 
 export default FileUploadInput;

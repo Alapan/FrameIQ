@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+The project uses a Next.js (React) frontend, an Express (Node.js + TypeScript) signer service, and Google Cloud Storage for secure direct-to-cloud image uploads using signed URLs. During local development, authentication is handled via Google Cloud IAM and Application Default Credentials (ADC).
 
-## Getting Started
+The system is designed to be extended with Cloud Run-based image processing services and Cloud SQL for storing image metadata. In future iterations, uploaded images will be processed using AI to extract insights and generate structured information, which will then be displayed in the frontend.
 
-First, run the development server:
+## Prerequisites
+
+Install:
+
+1. Node.js (LTS)
+2. Google Cloud CLI: https://cloud.google.com/sdk/docs/install
+3. A GCP project with billing enabled
+
+## Google Cloud setup
+
+1. gcloud config set project <YOUR_PROJECT_ID>
+
+### Enable required APIs:
+
+1. gcloud services enable storage.googleapis.com
+2. gcloud services enable iamcredentials.googleapis.com
+
+### Create Cloud Storage bucket
+
+1. gcloud storage buckets create gs://<BUCKET_NAME> --location=us-central1
+
+(or manually through Cloud Console)
+
+### Service Account creation
+
+1. gcloud iam service-accounts create signer-sa
+2. gcloud storage buckets add-iam-policy-binding gs://<BUCKET_NAME> \
+  --member="serviceAccount:signer-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
+  --role="roles/storage.objectAdmin"
+
+### Grant permissions to bucket
+
+1. gcloud storage buckets add-iam-policy-binding gs://image-iq-bucket \
+  --member="serviceAccount:signer-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
+  --role="roles/storage.objectAdmin"
+
+### Allow service account to sign URLs
+1. gcloud iam service-accounts add-iam-policy-binding signer-sa@<PROJECT_ID>.iam.gserviceaccount.com \
+  --member="user:<YOUR_EMAIL>" \
+  --role="roles/iam.serviceAccountTokenCreator"
+
+## Authenticate locally
+1. gcloud auth login
+2. gcloud auth application-default login --impersonate-service-account=signer-sa@<PROJECT_ID>.iam.gserviceaccount.com
+
+## Configure CORS
+In signed-url-generator, run
 
 ```bash
+gcloud storage buckets update gs://image-iq-bucket --cors-file=cors.json
+```
+## Getting Started
+
+1. Create .env.local in frontend/ folder and .env in signed-url-generator/ folder. Copy the values from the sample env files in the respective folders.
+
+2. Run the development server for frontend:
+
+```bash
+cd frontend
+npm install (first time only)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+In a separate terminal, run:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cd signed-url-generator
 
-## Learn More
+npm install (first time only)
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Current flow
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. User selects file in frontend.
+2. Frontend requests signed URL from signed URL generator service.
+3. The generator service responds with the URL.
+3. Frontend makes a PUT request to the created GCS bucket using the URL.

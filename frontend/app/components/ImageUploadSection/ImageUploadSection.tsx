@@ -4,10 +4,13 @@ import { useState } from "react";
 import FileUploadInput from "../FileUploadInput/FileUploadInput";
 import ImagePreview from "../ImagePreview/ImagePreview";
 import Button from "../Button/Button";
+import uploadImageToBucket from "@/app/helpers/uploadImageToBucket";
 
 const ImageUploadSection = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const updateFile = (file: File | null) => {
     if (!file) return;
@@ -17,7 +20,10 @@ const ImageUploadSection = () => {
   };
 
   const onClick = () => {
-
+    if (!file) return;
+    uploadImageToBucket(file)
+      .then(() => setIsSuccess(true))
+      .catch(() => setIsError(true));
   }
 
   return (
@@ -33,6 +39,8 @@ const ImageUploadSection = () => {
           <FileUploadInput label="Upload your image here" onFileSelect={updateFile} file={file}/>
           <ImagePreview file={file} />
           <Button label={'Upload'} onClick={onClick} disabled={isButtonDisabled} variant={'primary'}/>
+          {isSuccess && <p className="text-green-500">Image uploaded successfully!</p>}
+          {isError && <p className="text-red-500">Error uploading image!</p>}
         </div>
       </main>
     </div>

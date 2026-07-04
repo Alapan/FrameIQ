@@ -4,7 +4,7 @@ const config: StorybookConfig = {
   "stories": [
     "../stories/**/*.mdx",
     "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../components/**/*.stories.@(js|jsx|mjs|ts|tsx)"
+    "../app/components/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
   "addons": [
     "@chromatic-com/storybook",
@@ -14,8 +14,6 @@ const config: StorybookConfig = {
     "@storybook/addon-mcp"
   ],
   "framework": "@storybook/nextjs-vite",
-  "staticDirs": [
-    "..\\public"
-  ]
+  "staticDirs": ["../public"]
 };
 export default config;

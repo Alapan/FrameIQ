@@ -1,5 +1,8 @@
 import type { Preview } from '@storybook/nextjs-vite';
 
+// TypeScript may complain about side-effect imports of CSS files in this Storybook context.
+// Ignore the next line's type error so the global styles are still loaded for stories.
+// @ts-ignore
 import "../app/globals.css";
 
 const preview: Preview = {

@@ -1,5 +1,5 @@
 {
-  "name": "frame-iq",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -16,26 +16,26 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^5.2.1",
+    "@storybook/addon-a11y": "^10.4.6",
+    "@storybook/addon-docs": "^10.4.6",
+    "@storybook/addon-mcp": "^0.6.0",
+    "@storybook/addon-vitest": "^10.4.6",
+    "@storybook/nextjs-vite": "^10.4.6",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/browser-playwright": "^4.1.9",
+    "@vitest/coverage-v8": "^4.1.9",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "eslint-plugin-storybook": "^10.4.6",
+    "playwright": "^1.61.1",
+    "storybook": "^10.4.6",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "storybook": "^10.4.6",
-    "@storybook/nextjs-vite": "^10.4.6",
-    "@chromatic-com/storybook": "^5.2.1",
-    "@storybook/addon-vitest": "^10.4.6",
-    "@storybook/addon-a11y": "^10.4.6",
-    "@storybook/addon-docs": "^10.4.6",
-    "@storybook/addon-mcp": "^0.6.0",
     "vite": "^8.1.0",
-    "eslint-plugin-storybook": "^10.4.6",
-    "vitest": "^4.1.9",
-    "playwright": "^1.61.1",
-    "@vitest/browser-playwright": "^4.1.9",
-    "@vitest/coverage-v8": "^4.1.9"
+    "vitest": "^4.1.9"
   }
 }

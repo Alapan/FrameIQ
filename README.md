@@ -28,13 +28,10 @@ Install:
 ### Service Account creation
 
 1. gcloud iam service-accounts create signer-sa
-2. gcloud storage buckets add-iam-policy-binding gs://<BUCKET_NAME> \
-  --member="serviceAccount:signer-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
-  --role="roles/storage.objectAdmin"
 
 ### Grant permissions to bucket
 
-1. gcloud storage buckets add-iam-policy-binding gs://image-iq-bucket \
+1. gcloud storage buckets add-iam-policy-binding gs://<BUCKET_NAME> \
   --member="serviceAccount:signer-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
   --role="roles/storage.objectAdmin"
 

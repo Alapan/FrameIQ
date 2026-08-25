@@ -1,6 +1,10 @@
+## Project Overview
+
 The project uses a Next.js (React) frontend, an Express (Node.js + TypeScript) signer service, and Google Cloud Storage for secure direct-to-cloud image uploads using signed URLs. During local development, authentication is handled via Google Cloud IAM and Application Default Credentials (ADC).
 
-The system is designed to be extended with Cloud Run-based image processing services and Cloud SQL for storing image metadata. In future iterations, uploaded images will be processed using AI to extract insights and generate structured information, which will then be displayed in the frontend.
+Uploaded images trigger a Google Cloud Pub/Sub notification, which invokes a Cloud Run service responsible for receiving and handling the storage events. This provides the foundation for an event-driven image processing pipeline.
+
+The system is designed to be extended with Cloud Run Jobs for asynchronous image processing and Firestore for storing image metadata and AI-generated results. In future iterations, uploaded images will be processed using AI to extract insights and generate structured information, which will then be stored and displayed in the frontend.
 
 ## Prerequisites
 
@@ -79,4 +83,7 @@ npm run start
 1. User selects file in frontend.
 2. Frontend requests signed URL from signed URL generator service.
 3. The generator service responds with the URL.
-3. Frontend makes a PUT request to the created GCS bucket using the URL.
+4. The frontend uses the signed URL to upload the image directly to the Google Cloud Storage bucket using a PUT request.
+5. Cloud Storage saves the image and publishes an event containing metadata about the uploaded object to a Pub/Sub topic.
+6. The Pub/Sub push subscription sends the notification to the Cloud Run service.
+7. The Cloud Run service receives and processes the image metadata.

@@ -1,6 +1,8 @@
 {
   "name": "signed-url-generator",
   "version": "0.1.0",
+  "description": "Express service to generate signed URLs for Google Cloud Storage",
+  "author": "Alapan Mukherjee",
   "private": true,
   "type": "module",
   "scripts": {

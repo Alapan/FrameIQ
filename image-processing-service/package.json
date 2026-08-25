@@ -1,0 +1,30 @@
+{
+  "name": "image-processing-service",
+  "version": "1.0.0",
+  "description": "Cloud Run service to handle image processing requests",
+  "keywords": [
+    "Typescript",
+    "Express",
+    "Cloud",
+    "Run"
+  ],
+  "license": "ISC",
+  "author": "Alapan Mukherjee",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "test": "npm run test",
+    "start": "tsx watch index.ts"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.3.0",
+    "tsx": "^4.23.12"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}

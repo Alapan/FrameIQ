@@ -1,11 +1,13 @@
 async function uploadImageToBucket(file: File) {
-
   const options = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ filename: file?.name }),
+    body: JSON.stringify({
+      filename: file?.name,
+      contentType: file?.type
+    }),
   }
 
   fetch(`${process.env.NEXT_PUBLIC_SIGNED_SERVICE_BASE_URL}/uploads/sign`, options)
@@ -14,7 +16,7 @@ async function uploadImageToBucket(file: File) {
       await fetch(data.signedUrl, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/octet-stream',
+          'Content-Type': file?.type,
         },
         body: file,
       });

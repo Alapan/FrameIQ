@@ -86,4 +86,4 @@ npm run start
 4. The frontend uses the signed URL to upload the image directly to the Google Cloud Storage bucket using a PUT request.
 5. Cloud Storage saves the image and publishes an event containing metadata about the uploaded object to a Pub/Sub topic.
 6. The Pub/Sub push subscription sends the notification to the Cloud Run service.
-7. The Cloud Run service receives and processes the image metadata.
+7. The Cloud Run service receives and processes the image metadata by passing it to Vertex AI. The AI service returns a text description of the image, which is to be saved so that it can be rendered by the frontend.

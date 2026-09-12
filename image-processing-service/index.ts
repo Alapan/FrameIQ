@@ -1,6 +1,7 @@
 import express, {Request, Response} from 'express';
 import cors from 'cors';
 import { analyseImage } from './analyseImage';
+import { saveResponseToDb } from './saveResponseToDb';
 
 const app = express();
 
@@ -29,9 +30,16 @@ app.post('/image-processing', async (req: Request, res: Response) => {
       type: data?.contentType,
     });
 
-    console.log(`AI response: ${aiResponse}`);
+    await saveResponseToDb({
+      name: data?.name,
+      contentType: data?.contentType,
+    }, aiResponse);
 
-    return res.status(200).json({ analysisOutput: aiResponse });
+    return res.status(200).json({
+      analysisOutput: aiResponse,
+      name: data?.name,
+      success: true,
+    });
   } catch (error) {
     console.log(`Error in processing image! ${error}`);
     return res.status(200).json({ error: 'Error in processing image!' });
